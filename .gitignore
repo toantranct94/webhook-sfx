@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Dependency directories
+lib/
+libs/
+Library/
+bin/
+build/
+dist/
+node_modules/
+bower_components/
+
+# Compiled files
+*.pyc
+*.class
+*.o
+*.obj
+*.dll
+*.exe
+*.so
+*.dylib
+
+# Miscellaneous
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+
+# Tests
+.*pytest_cache/

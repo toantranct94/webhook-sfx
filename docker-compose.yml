@@ -1,0 +1,66 @@
+version: "3.10"
+
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: changeit
+      POSTGRES_DB: webhook
+    ports:
+      - "5432:5432"
+    networks:
+      - local_network
+
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: changeit
+    ports:
+      - "5050:80"
+    networks:
+      - local_network
+
+  zookeeper:
+    restart: always
+    image: docker.io/bitnami/zookeeper:3.8
+    ports:
+      - "2181:2181"
+    volumes:
+      - "zookeeper-volume:/bitnami"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    networks:
+      - local_network
+
+  kafka:
+    restart: always
+    image: docker.io/bitnami/kafka:3.3
+    ports:
+      - "9093:9093"
+    volumes:
+      - "kafka-volume:/bitnami"
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=CLIENT://:9092,EXTERNAL://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://kafka:9092,EXTERNAL://localhost:9093
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=CLIENT
+    depends_on:
+      - zookeeper
+    networks:
+      - local_network
+
+volumes:
+  kafka-volume:
+  zookeeper-volume:
+
+networks:
+  local_network:
+    driver: bridge
