@@ -41,6 +41,9 @@ def load_config(app: Flask, test_config) -> None:
             test_config.get("FLASK_ENV") == 'development':
         app.config.from_object('app.config.Development')
 
+    elif os.environ.get('FLASK_ENV') == 'local':
+        app.config.from_object('app.config.Local')
+
     elif test_config.get('TESTING'):
         app.config.from_mapping(test_config)
 

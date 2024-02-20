@@ -59,3 +59,25 @@ class Development(Default):
     SECRET_KEY = 'dev'
     JWT_SECRET_KEY = 'dev'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+
+
+class Local(Default):
+    """Class containing the settings of the development environment.
+
+    It uses the dotenv library to load some values from the .env file to
+        environment.
+    After that, theses values are load from the environment to be use in the
+        internal Flask config.
+
+    Constants:
+        SECRET_KEY (str): The application secret key used to encrypt
+            your cookies.
+        SQLALCHEMY_DATABASE_URI (str): URI for the database source.
+    """
+
+    load_dotenv('.env.local', override=True)  # loading .env.local
+
+    DEBUG = True
+    SECRET_KEY = 'local'
+    JWT_SECRET_KEY = 'local'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')

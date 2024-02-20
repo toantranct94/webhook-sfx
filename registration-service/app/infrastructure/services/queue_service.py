@@ -19,6 +19,7 @@ class QueueService():
         retry_attempts: int = 5,
         retry_delay: int = 2,
     ):
+        print("QueueService __init__", host)
         for attempt in range(retry_attempts):
             try:
                 self.connection = pika.BlockingConnection(
