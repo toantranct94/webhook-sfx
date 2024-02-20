@@ -23,6 +23,7 @@ def create_app(test_config: dict = {}) -> Flask:
     init_database(app)
     init_blueprints(app)
     init_dependency(app, dependency_container_packages=['app.blueprint.api'])
+    init_queue_service()
 
     return app
 
@@ -107,3 +108,8 @@ def init_dependency(
         app,
         modules=dependency_container_module,
         packages=dependency_container_packages)
+
+
+def init_queue_service() -> None:
+    from .infrastructure import QueueService
+    _ = QueueService()

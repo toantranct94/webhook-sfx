@@ -1,4 +1,4 @@
-from app.infrastructure import PeopleService, WebhookService
+from app.infrastructure import PeopleService, QueueService, WebhookService
 from dependency_injector import containers, providers
 
 
@@ -15,4 +15,5 @@ class DependencyContainer(containers.DeclarativeContainer):
     wiring_config = containers.WiringConfiguration()
 
     people_service = providers.Factory(PeopleService)
+    queue_service = providers.Singleton(QueueService)
     webhook_service = providers.Factory(WebhookService)

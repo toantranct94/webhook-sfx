@@ -1,11 +1,18 @@
-FROM python:3.10-bullseye
+FROM --platform=linux/amd64 python:3.10-slim-buster
 
-EXPOSE 5000
-WORKDIR /app
-COPY requirements.txt requirements.txt
+WORKDIR /code
+
+COPY ./app /code/app
+COPY ./requirements.txt /code/requirements.txt
+COPY .env /code
+COPY ./migrations /code/migrations
+
+RUN apt-get update && apt-get install -y libpq-dev \
+    && apt-get clean
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
-COPY . .
+
+EXPOSE 5000
 
 # Keeps Python from generating .pyc files in the container
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -16,4 +23,6 @@ ENV PYTHONUNBUFFERED 1
 # run flask
 ENV FLASK_APP=app
 ENV FLASK_RUN_HOST=0.0.0.0
+
 CMD ["flask", "run"]
+

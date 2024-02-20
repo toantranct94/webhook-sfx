@@ -1,3 +1,4 @@
+import json
 from sqlalchemy.orm.exc import DetachedInstanceError
 
 
@@ -44,3 +45,9 @@ class ModelExtension:
             return f"<{self.__class__.__name__}({','.join(field_strings)})>"
 
         return f"<{self.__class__.__name__} {id(self)}>"
+
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+    def to_json(self):
+        return json.dumps(self.to_dict())

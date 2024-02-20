@@ -1,4 +1,4 @@
-from app.infrastructure.databases import db
+from app.infrastructure import db
 from app.infrastructure.models.model_extension import ModelExtension
 from sqlalchemy import Column, Integer, String
 

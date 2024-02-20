@@ -4,7 +4,8 @@ group, views related to the index endpoint of HTTP REST API.
 
 
 from app.dependency_container import DependencyContainer
-from app.infrastructure import PeopleService
+from app.domain import EventType
+from app.infrastructure import PeopleService, QueueService
 from dependency_injector.wiring import Provide, inject
 from flask import Blueprint
 
@@ -22,10 +23,14 @@ def create_people(
     data: dict,
     people_service: PeopleService = Provide[
         DependencyContainer.people_service
+    ],
+    queue_service: QueueService = Provide[
+        DependencyContainer.queue_service
     ]
 ):
     validated_data = CreatePeopleSchema().load(data)
-    people_service.create_people(**validated_data)
+    people = people_service.create_people(**validated_data)
+    queue_service.publish_message(people.to_dict(), EventType.CREATED.value)
     return create_message_response('People created', 201)
 
 
@@ -37,10 +42,14 @@ def update_people(
     data: dict,
     people_service: PeopleService = Provide[
         DependencyContainer.people_service
+    ],
+    queue_service: QueueService = Provide[
+        DependencyContainer.queue_service
     ]
 ):
     validated_data = UpdatePeopleSchema().load(data)
-    people_service.update_people(people_id, **validated_data)
+    people = people_service.update_people(people_id, **validated_data)
+    queue_service.publish_message(people.to_dict(), EventType.UPDATED.value)
     return create_message_response('Updated people')
 
 
@@ -50,7 +59,11 @@ def delete_people(
     people_id: int,
     people_service: PeopleService = Provide[
         DependencyContainer.people_service
+    ],
+    queue_service: QueueService = Provide[
+        DependencyContainer.queue_service
     ]
 ):
-    people_service.delete_people(people_id)
+    people = people_service.delete_people(people_id)
+    queue_service.publish_message(people.to_dict(), EventType.DELETED.value)
     return create_message_response('Deleted people')

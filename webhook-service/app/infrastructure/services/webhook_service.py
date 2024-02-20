@@ -1,4 +1,4 @@
-from app.infrastructure.databases import db
+from app.infrastructure import db
 from ..models import WebhookConfig
 
 

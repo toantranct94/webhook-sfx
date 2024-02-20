@@ -19,7 +19,5 @@ __all__ = [
     'PAGE',
     'PER_PAGE',
     'SERVICE_PREFIX',
-    'SCALER_FACTOR',
-    'NUM_RECOMMENDATIONS',
     'EventType',
 ]

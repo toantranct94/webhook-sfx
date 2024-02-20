@@ -1,6 +1,28 @@
 version: "3.10"
 
 services:
+
+  registration:
+    build:
+      context: ./registration-service
+      dockerfile: Dockerfile
+    ports:
+      - "8000:5000"
+    volumes:
+      - ./registration-service:/app
+    networks:
+      - local_network
+
+  webhook:
+    build:
+      context: ./webhook-service
+      dockerfile: Dockerfile
+    networks:
+      - local_network
+    depends_on:
+      - rabbitmq
+      - postgres
+
   postgres:
     image: postgres:latest
     restart: always
@@ -25,41 +47,25 @@ services:
     networks:
       - local_network
 
-  zookeeper:
-    restart: always
-    image: docker.io/bitnami/zookeeper:3.8
+  rabbitmq:
+    image: rabbitmq:management
+    command: rabbitmq-server
+    tty: true
     ports:
-      - "2181:2181"
-    volumes:
-      - "zookeeper-volume:/bitnami"
-    environment:
-      - ALLOW_ANONYMOUS_LOGIN=yes
+      - "5672:5672"
+      - "15672:15672"
     networks:
       - local_network
 
-  kafka:
-    restart: always
-    image: docker.io/bitnami/kafka:3.3
+  flower:
+    image: mher/flower:0.9.7
+    command: ['flower', '--broker=pyamqp://guest:guest@rabbitmq:5672//', '--port=5556']
     ports:
-      - "9093:9093"
-    volumes:
-      - "kafka-volume:/bitnami"
-    environment:
-      - KAFKA_BROKER_ID=1
-      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
-      - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
-      - KAFKA_CFG_LISTENERS=CLIENT://:9092,EXTERNAL://:9093
-      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://kafka:9092,EXTERNAL://localhost:9093
-      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=CLIENT
+      - "5556:5556"
     depends_on:
-      - zookeeper
+      - rabbitmq
     networks:
       - local_network
-
-volumes:
-  kafka-volume:
-  zookeeper-volume:
 
 networks:
   local_network:

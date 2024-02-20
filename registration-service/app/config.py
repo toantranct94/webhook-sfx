@@ -19,6 +19,7 @@ class Default():
     JWT_BLACKLIST_ENABLED = True
     JWT_BLACKLIST_TOKEN_CHECKS = ['access', 'refresh']
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    LOG_LEVEL = 'INFO'
 
 
 class Production(Default):
