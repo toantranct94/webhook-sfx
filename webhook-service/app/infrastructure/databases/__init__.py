@@ -1,3 +1,6 @@
-from .sql_alchemy import db, init
+from .sql_alchemy import db, Base
 
-__all__ = ["db", "init"]
+__all__ = [
+    'Base',
+    'db'
+]

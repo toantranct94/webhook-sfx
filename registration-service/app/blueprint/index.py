@@ -5,7 +5,6 @@ group, views related to the index endpoint of HTTP REST API.
 
 from flask import Blueprint
 
-
 bp = Blueprint('index', __name__, url_prefix='')
 
 

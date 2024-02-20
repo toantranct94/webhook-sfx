@@ -2,11 +2,9 @@ from app.infrastructure import WebhookService
 from dependency_injector import containers, providers
 
 
-def setup_dependency_container(app, modules=None, packages=None):
+def setup_dependency_container(modules=None, packages=None):
     container = DependencyContainer()
-    app.container = container
-    app.container.wire(modules=modules, packages=packages)
-    return app
+    container.wire(modules=modules, packages=packages)
 
 
 class DependencyContainer(containers.DeclarativeContainer):

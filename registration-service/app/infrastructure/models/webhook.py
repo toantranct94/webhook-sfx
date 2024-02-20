@@ -1,7 +1,8 @@
-from app.infrastructure.databases import db
-from app.infrastructure.models.model_extension import ModelExtension
 from sqlalchemy import Column, Integer, String, UniqueConstraint
 from sqlalchemy.dialects.postgresql import JSONB
+
+from app.infrastructure.databases import db
+from app.infrastructure.models.model_extension import ModelExtension
 
 
 class WebhookConfig(db.Model, ModelExtension):

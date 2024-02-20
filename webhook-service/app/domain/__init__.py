@@ -1,5 +1,6 @@
-from .constants import (DEFAULT_PAGE_VALUE, DEFAULT_PER_PAGE_VALUE, ITEMIZE,
-                        ITEMIZED, LOG_LEVEL, PAGE, PER_PAGE, SERVICE_PREFIX,
+from .constants import (COUNTDOWN, DEFAULT_PAGE_VALUE, DEFAULT_PER_PAGE_VALUE,
+                        ITEMIZE, ITEMIZED, LOG_LEVEL, MAX_RETRY, PAGE,
+                        PER_PAGE, RETRY_DELAY, SERVICE_PREFIX,
                         SQLALCHEMY_DATABASE_URI)
 from .enums import EventType
 from .exceptions import (ApiException, ClientException,
@@ -20,4 +21,7 @@ __all__ = [
     'PER_PAGE',
     'SERVICE_PREFIX',
     'EventType',
+    'MAX_RETRY',
+    'RETRY_DELAY',
+    'COUNTDOWN',
 ]

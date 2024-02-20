@@ -1,5 +1,5 @@
-from app.infrastructure.models import People
 from app.infrastructure.databases import db
+from app.infrastructure.models import People
 
 
 class PeopleService:

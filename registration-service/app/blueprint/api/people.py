@@ -3,11 +3,14 @@ group, views related to the index endpoint of HTTP REST API.
 """
 
 
+import logging
+
+from dependency_injector.wiring import Provide, inject
+from flask import Blueprint
+
 from app.dependency_container import DependencyContainer
 from app.domain import EventType
 from app.infrastructure import PeopleService, QueueService
-from dependency_injector.wiring import Provide, inject
-from flask import Blueprint
 
 from ..middleware import body_required
 from ..responses import create_message_response
@@ -67,3 +70,13 @@ def delete_people(
     people = people_service.delete_people(people_id)
     queue_service.publish_message(people.to_dict(), EventType.DELETED.value)
     return create_message_response('Deleted people')
+
+
+@bp.route('/callback', methods=['POST'])
+@body_required
+@inject
+def callback(
+    data: dict,
+):
+    logging.info(f"Received callback: {data}")
+    return create_message_response('Received', 200)

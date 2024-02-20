@@ -1,5 +1,6 @@
-from app.infrastructure import PeopleService, QueueService, WebhookService
 from dependency_injector import containers, providers
+
+from app.infrastructure import PeopleService, QueueService, WebhookService
 
 
 def setup_dependency_container(app, modules=None, packages=None):

@@ -7,6 +7,6 @@ COPY ./app /code/app
 COPY .env /code
 
 RUN pip install --no-cache-dir -r requirements.txt
-
+ENV ENV=dev
 
 CMD celery -A app.workers.consumer worker --loglevel=info

@@ -5,7 +5,7 @@ import marshmallow.exceptions as marshmallow_exceptions
 from flask import jsonify
 from werkzeug.exceptions import HTTPException
 
-from app.domain import ClientException, ApiException
+from app.domain import ApiException, ClientException
 
 logger = logging.getLogger(__name__)
 

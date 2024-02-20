@@ -1,4 +1,5 @@
 import json
+
 from sqlalchemy.orm.exc import DetachedInstanceError
 
 

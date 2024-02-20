@@ -4,8 +4,8 @@ from typing import Callable
 
 from sqlalchemy.exc import SQLAlchemyError
 
-from app.domain import ApiException, ITEMIZE, ITEMIZED, PAGE, PER_PAGE, \
-    DEFAULT_PAGE_VALUE, DEFAULT_PER_PAGE_VALUE
+from app.domain import (DEFAULT_PAGE_VALUE, DEFAULT_PER_PAGE_VALUE, ITEMIZE,
+                        ITEMIZED, PAGE, PER_PAGE, ApiException)
 from app.infrastructure import db
 
 logger = logging.getLogger(__name__)

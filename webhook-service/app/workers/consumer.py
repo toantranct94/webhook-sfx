@@ -1,24 +1,48 @@
+import logging
 import os
+from typing import Any
+
+from app.clients import APIClient
 from app.domain import EventType
+from app.infrastructure import WebhookService
 from celery import Celery
-from dotenv import load_dotenv
+from .tasks import BaseTaskWithRetry
 
-load_dotenv()
+logging.basicConfig(level=logging.INFO)
 
-# Configure Celery to use RabbitMQ as the broker
 app = Celery('tasks', broker=os.environ.get('CELERY_BROKER_URL'))
 
-
-@app.task(bind=True, name=EventType.CREATED.value)
-def process_created_event(_, data):
-    print(f"Processing created event: {data}")
+client = APIClient()
+webhook_service = WebhookService()
 
 
-@app.task(bind=True, name=EventType.UPDATED.value)
-def process_updated_event(_, data):
-    print(f"Processing updated event: {data}")
+@app.task(bind=True, name=EventType.CREATED.value, base=BaseTaskWithRetry)
+def process_created_event(self, event_type: str, message: Any):
+    process_event(event_type, message)
 
 
-@app.task(bind=True, name=EventType.DELETED.value)
-def process_deleted_event(_, data):
-    print(f"Processing deleted event: {data}")
+@app.task(bind=True, name=EventType.UPDATED.value, base=BaseTaskWithRetry)
+def process_updated_event(self, event_type: str, message: Any):
+    process_event(event_type, message)
+
+
+
+@app.task(bind=True, name=EventType.DELETED.value, base=BaseTaskWithRetry)
+def process_deleted_event(self, event_type: str, message: Any):
+    process_event(event_type, message)
+
+
+def process_event(event_type: str, message: Any):
+    logging.info(f"Processing {event_type} event: {message}")
+    urls = get_endpoint(event_type)
+    for url in urls:
+        process_http_request(url[0], message)
+
+
+def get_endpoint(event_type: str) -> str:
+    urls = webhook_service.get_subscriptions(event_type)
+    return urls
+
+
+def process_http_request(url: str, message: Any):
+    client.forward_event(url, message)

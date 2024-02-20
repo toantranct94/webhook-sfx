@@ -5,6 +5,7 @@ import time
 import uuid
 
 import pika
+
 from app.singleton import singleton
 
 logging.basicConfig(level=logging.INFO)
@@ -47,8 +48,11 @@ class QueueService():
         body = {
             'task': event_type,
             'id': uuid.uuid4().hex,
-            'args': [message],
-            'kwargs': {},
+            'args': [],
+            'kwargs': {
+                'event_type': event_type,
+                'message': message,
+            },
         }
 
         self.channel.basic_publish(

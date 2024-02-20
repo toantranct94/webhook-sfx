@@ -3,10 +3,11 @@ group, views related to the index endpoint of HTTP REST API.
 """
 
 
-from app.dependency_container import DependencyContainer
-from app.infrastructure import WebhookService
 from dependency_injector.wiring import Provide, inject
 from flask import Blueprint
+
+from app.dependency_container import DependencyContainer
+from app.infrastructure import WebhookService
 
 from ..middleware import body_required
 from ..responses import create_message_response

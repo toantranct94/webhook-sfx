@@ -1,14 +1,22 @@
 """This module provides means to perform operations on the database
 using the SQLAlchemy library."""
 
-from flask import Flask
-from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import sessionmaker, scoped_session, Session
+from sqlalchemy import create_engine
+import os
+from dotenv import load_dotenv
+from sqlalchemy.ext.declarative import declarative_base
 
-db = SQLAlchemy()
-migrate = Migrate()
+if os.getenv('ENV') == 'dev':
+    load_dotenv()
+else:
+    load_dotenv('.env.local', override=True)
 
 
-def init(app: Flask) -> None:
-    db.init_app(app)
-    migrate.init_app(app, db)
+database_url = os.getenv('DATABASE_URL')
+engine = create_engine(database_url, convert_unicode=True)
+
+# Create a scoped session factory
+db = scoped_session(sessionmaker(bind=engine))
+Base = declarative_base()
+Base.query = db.query_property()

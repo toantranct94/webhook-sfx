@@ -1,4 +1,5 @@
 from app.infrastructure.databases import db
+
 from ..models import WebhookConfig
 
 
