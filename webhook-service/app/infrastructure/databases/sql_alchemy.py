@@ -1,11 +1,12 @@
 """This module provides means to perform operations on the database
 using the SQLAlchemy library."""
 
-from sqlalchemy.orm import sessionmaker, scoped_session, Session
-from sqlalchemy import create_engine
 import os
+
 from dotenv import load_dotenv
+from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import Session, scoped_session, sessionmaker
 
 if os.getenv('ENV') == 'dev':
     load_dotenv()

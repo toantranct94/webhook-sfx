@@ -1,11 +1,11 @@
 import logging.config
 
+from domain import LOG_LEVEL
 from flask import request
-
-from .domain import LOG_LEVEL
 
 
 def setup_logging(app):
+
     log_level = app.config.get(LOG_LEVEL)
     logging_config = {
         'version': 1,

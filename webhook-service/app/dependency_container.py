@@ -8,6 +8,9 @@ def setup_dependency_container(modules=None, packages=None):
 
 
 class DependencyContainer(containers.DeclarativeContainer):
+    """
+    Container for managing dependencies in the application.
+    """
 
     config = providers.Configuration()
     wiring_config = containers.WiringConfiguration()

@@ -67,6 +67,33 @@ services:
     networks:
       - local_network
 
+  prometheus:
+    image: prom/prometheus:v2.2.1
+    container_name: prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - registration
+    networks:
+      - local_network
+
+  grafana:
+    image: grafana/grafana:5.1.0
+    container_name: grafana
+    depends_on:
+      - prometheus
+    ports:
+      - 3000:3000
+    volumes:
+      - ./monitoring/grafana/config.ini:/etc/grafana/grafana.ini
+      - ./monitoring/grafana/datasource.yml:/etc/grafana/provisioning/datasources/default.yaml
+      - ./monitoring/grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/default.yaml
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards
+    networks:
+      - local_network
+
 networks:
   local_network:
     driver: bridge

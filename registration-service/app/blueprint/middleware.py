@@ -1,8 +1,7 @@
 from functools import wraps
 
+from domain import NoDataProvidedApiException
 from flask import request
-
-from app.domain import NoDataProvidedApiException
 
 
 def setup_prefix_middleware(app, prefix):

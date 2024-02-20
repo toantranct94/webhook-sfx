@@ -2,10 +2,9 @@
 import os
 
 import pytest
+from app import create_app
 from dotenv import load_dotenv
 from flask import Flask
-
-from app import create_app
 
 load_dotenv('./tests/test.env')
 

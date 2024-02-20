@@ -1,6 +1,5 @@
 from dependency_injector import containers, providers
-
-from app.infrastructure import PeopleService, QueueService, WebhookService
+from infrastructure import PeopleService, QueueService, WebhookService
 
 
 def setup_dependency_container(app, modules=None, packages=None):
@@ -11,6 +10,9 @@ def setup_dependency_container(app, modules=None, packages=None):
 
 
 class DependencyContainer(containers.DeclarativeContainer):
+    """
+    Container for managing dependencies in the application.
+    """
 
     config = providers.Configuration()
     wiring_config = containers.WiringConfiguration()

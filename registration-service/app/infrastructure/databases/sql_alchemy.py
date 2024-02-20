@@ -10,5 +10,14 @@ migrate = Migrate()
 
 
 def init(app: Flask) -> None:
+    """
+    Initialize the SQLAlchemy database and migration.
+
+    Args:
+        app (Flask): The Flask application instance.
+
+    Returns:
+        None
+    """
     db.init_app(app)
     migrate.init_app(app, db)

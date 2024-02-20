@@ -1,4 +1,4 @@
-from .sql_alchemy import db, Base
+from .sql_alchemy import Base, db
 
 __all__ = [
     'Base',

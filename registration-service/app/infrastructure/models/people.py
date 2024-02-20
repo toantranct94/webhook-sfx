@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String
 
-from app.infrastructure import db
-from app.infrastructure.models.model_extension import ModelExtension
+from ..databases import db
+from .model_extension import ModelExtension
 
 
 class People(db.Model, ModelExtension):

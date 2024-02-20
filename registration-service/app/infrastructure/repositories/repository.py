@@ -2,11 +2,10 @@ import logging
 from abc import ABC
 from typing import Callable
 
-from sqlalchemy.exc import SQLAlchemyError
-
 from app.domain import (DEFAULT_PAGE_VALUE, DEFAULT_PER_PAGE_VALUE, ITEMIZE,
                         ITEMIZED, PAGE, PER_PAGE, ApiException)
 from app.infrastructure import db
+from sqlalchemy.exc import SQLAlchemyError
 
 logger = logging.getLogger(__name__)
 

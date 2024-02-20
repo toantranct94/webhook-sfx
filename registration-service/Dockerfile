@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 python:3.10-slim-buster
+FROM --platform=linux/arm64/v8 python:3.10-slim-buster
 
 WORKDIR /code
 
@@ -21,8 +21,4 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # run flask
-ENV FLASK_APP=app
-ENV FLASK_RUN_HOST=0.0.0.0
-
-CMD ["flask", "run"]
-
+CMD ["python", "app/app.py"]

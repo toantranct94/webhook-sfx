@@ -6,6 +6,7 @@ from app.clients import APIClient
 from app.domain import EventType
 from app.infrastructure import WebhookService
 from celery import Celery
+
 from .tasks import BaseTaskWithRetry
 
 logging.basicConfig(level=logging.INFO)
@@ -33,6 +34,18 @@ def process_deleted_event(self, event_type: str, message: Any):
 
 
 def process_event(event_type: str, message: Any):
+    """
+    Process the given event by logging the event type and message,
+    retrieving the corresponding endpoint URLs, and sending an HTTP
+    request to each URL with the message.
+
+    Args:
+        event_type (str): The type of the event.
+        message (Any): The message associated with the event.
+
+    Returns:
+        None
+    """
     logging.info(f"Processing {event_type} event: {message}")
     urls = get_endpoint(event_type)
     for url in urls:
