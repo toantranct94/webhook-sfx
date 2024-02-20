@@ -46,6 +46,8 @@ def load_config(app: Flask, test_config) -> None:
         app.config.from_object(Development)
 
     elif os.environ.get('FLASK_ENV') == 'local':
+        import sys
+        sys.path.append(os.path.join(os.getcwd(), 'app'))
         from config import Local
         app.config.from_object(Local)
 

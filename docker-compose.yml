@@ -59,9 +59,9 @@ services:
 
   flower:
     image: mher/flower:0.9.7
-    command: ['flower', '--broker=pyamqp://guest:guest@rabbitmq:5672//', '--port=5556']
+    command: ['flower', '--broker=pyamqp://guest:guest@rabbitmq:5672//', '--port=5555']
     ports:
-      - "5556:5556"
+      - "5555:5555"
     depends_on:
       - rabbitmq
     networks:
