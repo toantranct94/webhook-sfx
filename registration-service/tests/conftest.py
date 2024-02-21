@@ -2,7 +2,7 @@
 import os
 
 import pytest
-from app import create_app
+from app.app import create_app
 from dotenv import load_dotenv
 from flask import Flask
 

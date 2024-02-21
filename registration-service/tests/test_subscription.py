@@ -1,7 +1,7 @@
 from flask import url_for
 
-URL = 'http://example.com/webhook-endpoint'
-EVENT_TYPE = 'my_event'
+URL = 'http://127.0.0.1:8000/callback'
+EVENT_TYPE = 'created'
 
 
 def test_upsert_subscription_201(test_client):

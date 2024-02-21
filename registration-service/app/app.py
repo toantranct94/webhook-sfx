@@ -52,6 +52,8 @@ def load_config(app: Flask, test_config) -> None:
         app.config.from_object(Local)
 
     elif test_config.get('TESTING'):
+        import sys
+        sys.path.append(os.path.join(os.getcwd(), 'app'))
         app.config.from_mapping(test_config)
 
     else:
