@@ -53,6 +53,140 @@ The workflow of the webhok execution is as follows:
 
 5. The monitoring service will monitor the system and store the metrics to the Prometheus database. The Grafana will then visualize the metrics from the Prometheus database.
 
+### Database Schema
+
+The schema for webhook subscription is shown in the image below.
+
+![Webhook schema](./docs/webhook-schema.png)
+
+
+### Folder Structure
+
+The folder structure of the system is as follows:
+
+```bash
+.
+├── README.md
+├── docker-compose.yml
+├── docs
+├── monitoring
+│   ├── grafana
+│   └── prometheus
+├── registration-service
+│   ├── Dockerfile
+│   ├── app
+│   │   ├── __init__.py
+│   │   ├── app.py
+│   │   ├── blueprint
+│   │   │   ├── __init__.py
+│   │   │   ├── api
+│   │   │   └── schemas
+│   │   │       ├── __init__.py
+│   │   │       ├── people.py
+│   │   │       └── webhook.py
+│   │   ├── config.py
+│   │   ├── domain
+│   │   │   ├── __init__.py
+│   │   │   ├── constants.py
+│   │   │   ├── enums.py
+│   │   ├── infrastructure
+│   │   │   ├── __init__.py
+│   │   │   ├── databases
+│   │   │   │   ├── __init__.py
+│   │   │   │   └── sql_alchemy.py
+│   │   │   ├── dependency_container.py
+│   │   │   ├── models
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── model_extension.py
+│   │   │   │   ├── people.py
+│   │   │   │   └── webhook.py
+│   │   │   ├── services
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── people_service.py
+│   │   │   │   ├── queue_service.py
+│   │   │   │   └── webhook_service.py
+│   │   │   └── singleton.py
+│   │   └── logs.py
+│   ├── migrations
+│   │   ├── README
+│   │   ├── alembic.ini
+│   │   ├── env.py
+│   │   ├── script.py.mako
+│   │   └── versions
+│   │       ├── c6ebf48325f3_.py
+│   │       └── c93971c9072e_.py
+│   ├── requirements.txt
+│   └── tests
+│       ├── __init__.py
+│       ├── conftest.py
+│       ├── test.env
+│       └── test_subscription.py
+└── webhook-service
+    ├── Dockerfile
+    ├── app
+    │   ├── clients
+    │   │   ├── __init__.py
+    │   │   └── api_client.py
+    │   ├── config.py
+    │   ├── dependency_container.py
+    │   ├── domain
+    │   │   ├── __init__.py
+    │   │   ├── constants.py
+    │   │   ├── enums.py
+    │   │   └── exceptions.py
+    │   ├── infrastructure
+    │   │   ├── __init__.py
+    │   │   ├── databases
+    │   │   │   ├── __init__.py
+    │   │   │   └── sql_alchemy.py
+    │   │   ├── models
+    │   │   │   ├── __init__.py
+    │   │   │   ├── model_extension.py
+    │   │   │   └── webhook.py
+    │   │   └── services
+    │   │       ├── __init__.py
+    │   │       └── webhook_service.py
+    │   ├── logging.py
+    │   └── workers
+    │       ├── __init__.py
+    │       ├── consumer.py
+    │       └── tasks.py
+    ├── requirements.txt
+    └── tests
+        ├── __init__.py
+        ├── conftest.py
+        └── test.env
+```
+
+The application follows the Onion Architecture pattern. This architecture pattern organizes a codebase into concentric layers, with the innermost layer containing the domain model and core business logic. Progressing outwards, each outer layer depends only on the layers inside of it. This dependency flow enables separation of concerns, maintainability, and scalability.
+
+Explanation of the folders:
+
+- **docs**: This folder contains the images for the documentation.
+
+- **monitoring**: This folder contains the configuration for the monitoring service.
+
+- **registration-service**: This folder contains the source code for the registration service.
+
+- **webhook-service**: This folder contains the source code for the webhook service.
+
+### Key libraries & Frameworks
+
+The following are the key libraries and frameworks that are used in the system:
+
+- **Flask**
+
+- **SQLAlchemy**
+
+- **RabbitMQ**
+
+- **Celery**
+
+- **Flower**
+
+- **Prometheus**
+
+- **Grafana**
 
 ## How to run the system
 
@@ -73,6 +207,12 @@ git clone https://github.com/toantranct94/webhook-sfx.git
 
 ```bash
 docker-compose up
+```
+
+4. Migrate the database
+
+```bash
+./migrate.sh
 ```
 
 ### Unit Tests
@@ -170,7 +310,6 @@ The monitoring service is implemented using Flower, Prometheus and Grafana. You 
 - Prometheus: http://localhost:9090
 
 - Grafana: http://localhost:3000
-
 
 ## Future Work
 
