@@ -39,6 +39,7 @@ class BaseTaskWithRetry(Task):
                 eta, countdown, max_retries,
                 **options)
         except MaxRetriesExceededError as e:
+            # TODO: Add the message to the dead letter queue
             if exc:
                 raise_with_context(exc)
             raise e
